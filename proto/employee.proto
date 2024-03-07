@@ -1,0 +1,38 @@
+syntax="proto3";
+
+option go_package="./proto";
+
+package grpc_project;
+
+service EmployeeService{
+
+    rpc CreateEmployee(CreateEmployeeRequest) returns (CreateEmployeeResponse);
+    rpc GetEmployee(GetEmployeeRequest) returns(GetEmployeeResponse);
+}
+
+message Employee{
+    string ID =1;
+    string name =2;
+    string empID=3;
+    string Address=4;
+    string mobile=5;
+    string email=6;
+    string department=7;
+}
+
+
+message GetEmployeeRequest{
+    string empID=1;
+}
+
+message GetEmployeeResponse{
+     Employee employee=1;
+     string Err=2;
+}
+message CreateEmployeeRequest{
+    Employee Employee=1;
+}
+message CreateEmployeeResponse{
+    string success=1;
+     string err=2;
+}
