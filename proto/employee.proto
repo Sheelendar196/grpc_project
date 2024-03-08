@@ -30,7 +30,7 @@ message GetEmployeeResponse{
      string Err=2;
 }
 message CreateEmployeeRequest{
-    Employee Employee=1;
+    Employee employee=1;
 }
 message CreateEmployeeResponse{
     string success=1;

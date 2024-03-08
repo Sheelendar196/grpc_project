@@ -1,0 +1,178 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/employee.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "EmployeeService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/grpc_project.EmployeeService/CreateEmployee": {
+      "post": {
+        "operationId": "EmployeeService_CreateEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpc_projectCreateEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpc_projectCreateEmployeeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    },
+    "/grpc_project.EmployeeService/GetEmployee": {
+      "post": {
+        "operationId": "EmployeeService_GetEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/grpc_projectGetEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/grpc_projectGetEmployeeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "EmployeeService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "grpc_projectCreateEmployeeRequest": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/grpc_projectEmployee"
+        }
+      }
+    },
+    "grpc_projectCreateEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "string"
+        },
+        "err": {
+          "type": "string"
+        }
+      }
+    },
+    "grpc_projectEmployee": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "empID": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "string"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        }
+      }
+    },
+    "grpc_projectGetEmployeeRequest": {
+      "type": "object",
+      "properties": {
+        "empID": {
+          "type": "string"
+        }
+      }
+    },
+    "grpc_projectGetEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/grpc_projectEmployee"
+        },
+        "Err": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

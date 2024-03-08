@@ -8,8 +8,6 @@ import (
 	"github.com/sheelendar196/go-projects/grpc_project/internal/core/domain"
 	"github.com/sheelendar196/go-projects/grpc_project/proto"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/health"
-	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
 type Service struct {
@@ -33,8 +31,8 @@ func (s *Service) Start(ctx context.Context, port string) error {
 	}
 
 	// register health server
-	hs := health.NewServer()
-	grpc_health_v1.RegisterHealthServer(s.Server, hs)
+	//hs := health.NewServer()
+	//grpc_health_v1.RegisterHealthServer(s.Server, hs)
 	proto.RegisterEmployeeServiceServer(s.Server, s)
 	//reflection.Register(s.Server)
 	return s.Server.Serve(l)

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"os"
 	"os/signal"
 
@@ -10,20 +9,13 @@ import (
 	"github.com/sheelendar196/go-projects/grpc_project/internal/infrastructure/repository"
 	logger "golang.org/x/exp/slog"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 const (
-	port = ":8010"
+	port = "8010"
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost"+port, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	defer conn.Close()
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	server := startServer(ctx)
@@ -40,6 +32,7 @@ func startServer(ctx context.Context) *grpc_emp.Service {
 	go func() {
 		logger.Info("connect to http://localhost:%s/ for grpc server", port)
 		if err := grpcSrv.Start(ctx, port); err != nil {
+			logger.Error("error to start server: ", err)
 			panic("grpc server failed")
 		}
 	}()
