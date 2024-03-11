@@ -1,3 +1,17 @@
+//Intalll kafka and zooker 
+
+// Run zookeeper
+zookeeper-server-start  /opt/homebrew/etc/kafka/zookeeper.properties
+
+//Run kafka
+ kafka-server-start   /opt/homebrew/etc/kafka/server.properties
+
+// create topic if not there
+  kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic employee_data
+
+// Start consumer on terminla
+ kafka-console-consumer --bootstrap-server localhost:9092 --topic employee_data --from-beginning
+
 //make dir: 
 mkdir graphql-project
 cd graphql-project
@@ -43,8 +57,14 @@ func main() {
 	http.ListenAndServe(port, mux)
 }
 
-// start this main file or server this is https server that connect with grpc server.
-// call API from terninal:
+// start grpc service to accept connection
+go run cmd/grpc/main.go
+
+// start test gateway service to run rest api
+go run test_grpc_proxy/main.go
+
+
+// Now you can call API from terninal or postman:
 
 //GetEmployee request using post method OR you can also call from postman
 curl -X POST -s localhost:8011/grpc_project.EmployeeService/GetEmployee -d '{ "empID": "232" }' 
