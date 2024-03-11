@@ -6,20 +6,23 @@ import (
 	"net"
 
 	"github.com/sheelendar196/go-projects/grpc_project/internal/core/domain"
+	eKafka "github.com/sheelendar196/go-projects/grpc_project/internal/handler/kafka"
 	"github.com/sheelendar196/go-projects/grpc_project/proto"
 	"google.golang.org/grpc"
 )
 
 type Service struct {
 	proto.UnimplementedEmployeeServiceServer
-	Server         *grpc.Server
-	empoyeeService EmployeeService
+	Server           *grpc.Server
+	empoyeeService   EmployeeService
+	employeeProducer *eKafka.EmployeeProducer
 }
 
-func NewService(srv *grpc.Server, empService EmployeeService) *Service {
+func NewService(srv *grpc.Server, empService EmployeeService, empoyeeProducer *eKafka.EmployeeProducer) *Service {
 	return &Service{
-		Server:         srv,
-		empoyeeService: empService,
+		Server:           srv,
+		empoyeeService:   empService,
+		employeeProducer: empoyeeProducer,
 	}
 }
 
@@ -30,11 +33,7 @@ func (s *Service) Start(ctx context.Context, port string) error {
 		return err
 	}
 
-	// register health server
-	//hs := health.NewServer()
-	//grpc_health_v1.RegisterHealthServer(s.Server, hs)
 	proto.RegisterEmployeeServiceServer(s.Server, s)
-	//reflection.Register(s.Server)
 	return s.Server.Serve(l)
 }
 
@@ -50,6 +49,7 @@ func (s *Service) CreateEmployee(ctx context.Context, req *proto.CreateEmployeeR
 		res.Err = "record not create into db"
 		return res, err
 	}
+	s.employeeProducer.PushEmployeeTokafka(req.GetEmployee())
 	res.Success = "true"
 	return res, nil
 }
